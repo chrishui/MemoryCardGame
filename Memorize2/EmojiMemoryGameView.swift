@@ -20,17 +20,29 @@ struct EmojiMemoryGameView: View {
             // Initialise struct CardView's var card
             CardView(card: card)
                 .onTapGesture {
-                // Sends picked card to model's func choose, via viewModel's viewModel choose func
                 viewModel.choose(card: card)
             }
             .padding(5)
         }
         .padding()
         .foregroundColor(viewModel.theme.cardColor)
+        
+        // New game button
+        Button("New Game"){
+            viewModel.newGame()
+        }
+        .foregroundColor(.accentColor)
+        .padding()
+        .background(
+            RoundedRectangle(
+                cornerRadius: 8,
+                style: .continuous
+            ).stroke(Color.accentColor)
+        ).padding()
     }
 }
 
-// View of each card
+// MARK: - View of each card
 struct CardView: View {
     var card: MemoryGame<String>.Card
     

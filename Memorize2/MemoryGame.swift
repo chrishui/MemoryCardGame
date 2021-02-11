@@ -47,7 +47,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
         }
     }
     
-    // mutating Func to choose struct Card, defined below. mutating, to change var cards
+    // user choose card. mutating, to change var cards
     mutating func choose(card: Card) {
         // To flip over chosen card, if Int is not nil (recall firstIndex returns Int?), and is not already face up
         // Finds the flipped over card's index in the var cards array (?)
@@ -64,7 +64,12 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
                 indexOfTheOneAndOnlyFaceUpCard = chosenIndex
             }
         }
-    } 
+    }
+    
+    // new game
+    mutating func newGame() {
+        cards = Array<Card>()
+    }
     
     // init to initialise var cards via ViewModel
     // 2nd argument is a function. cardContentFactory, Int input, returns 'don't care' CardContent
