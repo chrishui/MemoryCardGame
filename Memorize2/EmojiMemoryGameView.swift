@@ -12,7 +12,7 @@ struct EmojiMemoryGameView: View {
     // Pointer to viewModel. @ObservedObject (relates to ObservableObject in EmojiMemoryGame), updates
     // everytime objectWillChange.send
     @ObservedObject var viewModel: EmojiMemoryGame
-        
+    
     // body is called by system
     var body: some View {
         // Initialize struct Grid's var items, and viewForItem (do not need to show)
@@ -25,12 +25,12 @@ struct EmojiMemoryGameView: View {
             }
             .padding(5)
         }
-        // Styling applied to all element within HStack
         .padding()
-        .foregroundColor(Color.orange)
+        .foregroundColor(viewModel.theme.cardColor)
     }
 }
 
+// View of each card
 struct CardView: View {
     var card: MemoryGame<String>.Card
     
@@ -67,10 +67,7 @@ struct CardView: View {
     
 }
 
-
-
-
-
+// Preview
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         EmojiMemoryGameView(viewModel: EmojiMemoryGame())

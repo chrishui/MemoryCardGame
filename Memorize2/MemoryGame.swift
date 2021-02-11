@@ -71,14 +71,12 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
     init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
         // Create an empty array. Initialises var cards (line 16)
         cards = Array<Card>()
-        // Populate cards array 
+        // Populate cards array
         for pairIndex in 0..<numberOfPairsOfCards {
-            // note: cardContentFactory defined in viewModel line 24/25
             let content = cardContentFactory(pairIndex)
             cards.append(Card(content: content, id: pairIndex*2))
             cards.append(Card(content: content, id: pairIndex*2+1))
         }
-        // Shuffle cards
         cards.shuffle()
     }
     
@@ -89,4 +87,5 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
         var content: CardContent
         var id: Int
     }
+    
 }

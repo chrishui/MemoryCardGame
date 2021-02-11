@@ -12,37 +12,21 @@ import SwiftUI
 // class (instead of struct). ObservableObject (only applicable to class) contrains/gains, gain var objectWillChange.
 // class biggest advantage is 1) it's easy to share, 2) lives in the HEAP, 3)Can have lots of pointers. Many views can look through this portal
 class EmojiMemoryGame: ObservableObject {
-    // var model, contents MemoryGame is String
     // private(set) means 1) only EmojiMemoryGame can modify the model. 2) everyone else can still see the model
     // private means fully closed door
     // @Published, a property wrapper, notice every time var model changes, it will call objectWillChange.send (which indicates MemoryGame (model) will change)
-    @Published private var model: MemoryGame<String> = EmojiMemoryGame.createMemoryGame()
-    
-    // card game themes
-    struct Theme {
-        var name = ["Halloween","Animals","Sports","Faces","Cars","Food"]
-        var emojis = [["🎃","🕷","🕸","🍬","👺","👻"],["🐴","🐒","🦁","🦍","🦋","🐧"],["⚽️","🏀","🏈","⚾️","🎾","🏐"],["🥶","😈","😷","🤡","💩","🤠"],["🚗","🚕","🚑","🚚","🚝","🚀"],["🍏","🍎","🥬","🥐","🥖","🍑"]]
-        var noOfPairsOfCards: [Int?] = [5,5,nil,5,5]
-        //var cardColor: String?
-        func pairsOfCards(index: Int) -> Int {
-            if let number = noOfPairsOfCards[index] {
-                return number
-            } else {
-                return Int.random(in: 2...5)
-            }
-        }
+    @Published private var model: MemoryGame<String>
+    var theme = themes.randomElement()!
+    init() {
+        model = EmojiMemoryGame.createMemoryGame(theme: theme)
     }
     
-    static func createMemoryGame() -> MemoryGame<String> {
-        // choose random theme
-        let theme = Theme()
-        let themeIndex = Int.random(in: 0...theme.name.count-1)
+    static func createMemoryGame(theme: Theme) -> MemoryGame<String> {
+        let emojis = theme.emojis.shuffled()
+        let pairsOfCards = theme.numberOfPairs ?? Int.random(in: 2...6)
         // Below returns MemoryGame<String> struct, recall can omit argument label for first trailling closure, so cardContentFactory label omitted
-        // pairIndex from model's line 75. Random int between 2 to 5.
-        return MemoryGame<String>(numberOfPairsOfCards: theme.pairsOfCards(index: themeIndex)) { pairIndex in
-            return theme.emojis[themeIndex][pairIndex]
-//        return MemoryGame<String>(numberOfPairsOfCards: Int.random(in: 2...5)) { pairIndex in
-//            return emojis[pairIndex]
+        return MemoryGame<String>(numberOfPairsOfCards: pairsOfCards) { pairIndex in
+            return emojis[pairIndex]
         }
     }
     
