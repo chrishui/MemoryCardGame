@@ -16,7 +16,7 @@ let themes: [Theme] = [
         cardColor: .orange,
         id: 0
     ),
-    
+
     Theme(
         name: "Animals",
         emojis: ["🐴","🐒","🦁","🦍","🦋","🐧"],
@@ -24,7 +24,7 @@ let themes: [Theme] = [
         cardColor: .purple,
         id: 1
     ),
-    
+
     Theme(
         name: "Sports",
         emojis: ["⚽️","🏀","🏈","⚾️","🎾","🏐"],
@@ -32,7 +32,7 @@ let themes: [Theme] = [
         cardColor: .blue,
         id: 2
     ),
-    
+
     Theme(
         name: "Faces",
         emojis: ["🥶","😈","😷","🤡","💩","🤠"],
@@ -40,7 +40,7 @@ let themes: [Theme] = [
         cardColor: .gray,
         id: 3
     ),
-    
+
     Theme(
         name: "Cars",
         emojis: ["🚗","🚕","🚑","🚚","🚝","🚀"],
@@ -48,7 +48,7 @@ let themes: [Theme] = [
         cardColor: .red,
         id: 4
     ),
-    
+
     Theme(
         name: "Food",
         emojis: ["🍏","🍎","🥬","🥐","🥖","🍑"],

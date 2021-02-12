@@ -14,6 +14,7 @@ import Foundation
 // CardContent is Equatable, so that it can match chosen card with potential match (==) operator
 struct MemoryGame<CardContent> where CardContent: Equatable{
     var cards: Array<Card>
+    var score = 0
     
     // Getter and Setter
     var indexOfTheOneAndOnlyFaceUpCard: Int? {
@@ -58,28 +59,18 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
                     cards[chosenIndex].isMatched = true
                     cards[potentialMatchIndex].isMatched = true
                     // card score
-                    cards[chosenIndex].score += 1
-                    cards[potentialMatchIndex].score += 1
+                    score += 2
                 }
                 cards[chosenIndex].isFaceUp = true
                 // card score
-                if cards[chosenIndex].isPreviouslySeen && !cards[chosenIndex].isMatched { cards[chosenIndex].score -= 1 }
-                if cards[potentialMatchIndex].isPreviouslySeen && !cards[potentialMatchIndex].isMatched { cards[potentialMatchIndex].score -= 1 }
+                if cards[chosenIndex].isPreviouslySeen && !cards[chosenIndex].isMatched { score -= 1 }
+                if cards[potentialMatchIndex].isPreviouslySeen && !cards[potentialMatchIndex].isMatched { score -= 1 }
                 cards[chosenIndex].isPreviouslySeen = true
                 cards[potentialMatchIndex].isPreviouslySeen = true
             } else {
                 indexOfTheOneAndOnlyFaceUpCard = chosenIndex
             }
         }
-    }
-    
-    // live score
-    func score() -> String {
-        var scoreTotal: Int = 0
-        for index in cards.indices{
-            scoreTotal += cards[index].score
-        }
-        return String(scoreTotal)
     }
     
     // init to initialise var cards via ViewModel
@@ -96,18 +87,6 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
         cards.shuffle()
     }
     
-    // new game
-    mutating func newGame(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
-        // reset array of cards
-        cards = Array<Card>()
-        for pairIndex in 0..<numberOfPairsOfCards {
-            let content = cardContentFactory(pairIndex)
-            cards.append(Card(content: content, id: pairIndex*2))
-            cards.append(Card(content: content, id: pairIndex*2+1))
-        }
-        cards.shuffle()
-    }
-    
     // Note: the identifiable 
     struct Card: Identifiable {
         var isFaceUp: Bool = false
@@ -115,7 +94,6 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
         var content: CardContent
         var id: Int
         var isPreviouslySeen: Bool = false
-        var score: Int = 0
     }
     
 }
