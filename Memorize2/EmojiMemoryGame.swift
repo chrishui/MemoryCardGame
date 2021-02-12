@@ -30,11 +30,16 @@ class EmojiMemoryGame: ObservableObject {
         }
     }
     
+    
     // MARK: - Access to the model
     // var cards to let people look cards in the model in constricted ways
     // Note: model is var defined in line 18. calls EmojiMemoryGame.CreateMemoryGame() as set in that line.
     var cards: Array<MemoryGame<String>.Card> {
         model.cards
+    }
+    // game score
+    func score() -> String {
+        model.score()
     }
     
     // MARK: - Intent(s)
@@ -43,11 +48,16 @@ class EmojiMemoryGame: ObservableObject {
         model.choose(card: card)
     }
     
-    // New Game
+    // MARK: - New Game
     func newGame() {
-        model.newGame()
-        // TODO
+        theme = themes.randomElement()!
+        let emojis = theme.emojis.shuffled()
+        let pairsOfCards = theme.numberOfPairs ?? Int.random(in: 4...6)
+        model.newGame(numberOfPairsOfCards: pairsOfCards) { pairIndex in
+            return emojis[pairIndex]
+        }
     }
+    
 }
 
 
