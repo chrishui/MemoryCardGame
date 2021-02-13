@@ -15,12 +15,13 @@ struct EmojiMemoryGameView: View {
     
     // body is called by system
     var body: some View {
-        HStack{
+        // game score
+        HStack(spacing: 100){
+            Text("Theme: \(viewModel.theme.name)")
             Text("Score: \(viewModel.score)")
-            Text(viewModel.theme.name)
         }
-            
-        // Initialize struct Grid's var items, and viewForItem (do not need to show)
+        
+        // initialize struct Grid's var items, and viewForItem (do not need to show)
         Grid(viewModel.cards) {card in
             // Initialise struct CardView's var card
             CardView(card: card)
@@ -32,11 +33,10 @@ struct EmojiMemoryGameView: View {
         .padding()
         .foregroundColor(viewModel.theme.cardColor)
         
-        // New game button
+        // new game button
         Button("New Game"){
             viewModel.newGame()
         }
-        .foregroundColor(.accentColor)
         .padding()
         .background(
             RoundedRectangle(
@@ -90,3 +90,41 @@ struct ContentView_Previews: PreviewProvider {
         EmojiMemoryGameView(viewModel: EmojiMemoryGame())
     }
 }
+
+
+//struct EmojiMemoryGameView: View {
+//    @ObservedObject var viewModel: EmojiMemoryGame
+//    var body: some View {
+//        NavigationView {
+//            VStack {
+//                LazyVGrid(columns: columns) {
+//                    ForEach(viewModel.cards) { card in
+//                        CardView(card: card).onTapGesture {
+//                            withAnimation(.linear(duration: flipDuration)) {
+//                                viewModel.choose(card: card)
+//                            }
+//                        }
+//                        .scaledToFill()
+//                        .padding(.vertical)
+//                    }
+//                }
+//                .padding(.horizontal)
+//
+//                Spacer()
+//
+//                Text("Score: \(viewModel.score)")
+//                    .font(.largeTitle)
+//                    .padding(.bottom)
+//            }
+//            .accentColor(viewModel.theme.accentColor)
+//            .foregroundColor(viewModel.theme.accentColor)
+//            .navigationBarTitle(viewModel.theme.name)
+//            .navigationBarItems(trailing:
+//                Button("New Game") {
+//                    withAnimation(.easeInOut(duration: shuffleDuration)) {
+//                        viewModel.newGame()
+//                    }
+//                }
+//            )
+//        }
+//    }
