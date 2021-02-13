@@ -21,7 +21,7 @@ class EmojiMemoryGame: ObservableObject {
         model = EmojiMemoryGame.createMemoryGame(theme: theme)
     }
     
-    static func createMemoryGame(theme: Theme) -> MemoryGame<String> {
+    private static func createMemoryGame(theme: Theme) -> MemoryGame<String> {
         let emojis = theme.emojis.shuffled()
         let pairsOfCards = theme.numberOfPairs ?? Int.random(in: 4...6)
         // Below returns MemoryGame<String> struct, recall can omit argument label for first trailling closure, so cardContentFactory label omitted

@@ -76,9 +76,9 @@ struct CardView: View {
     
     // MARK: - Drawing Constants
     
-    let cornerRadius: CGFloat = 10
-    let edgeLineWidth: CGFloat = 3
-    func fontSize(for size: CGSize) -> CGFloat {
+    private let cornerRadius: CGFloat = 10
+    private let edgeLineWidth: CGFloat = 3
+    private func fontSize(for size: CGSize) -> CGFloat {
         min(size.width, size.height) * 0.75
     }
     
@@ -91,40 +91,3 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-
-//struct EmojiMemoryGameView: View {
-//    @ObservedObject var viewModel: EmojiMemoryGame
-//    var body: some View {
-//        NavigationView {
-//            VStack {
-//                LazyVGrid(columns: columns) {
-//                    ForEach(viewModel.cards) { card in
-//                        CardView(card: card).onTapGesture {
-//                            withAnimation(.linear(duration: flipDuration)) {
-//                                viewModel.choose(card: card)
-//                            }
-//                        }
-//                        .scaledToFill()
-//                        .padding(.vertical)
-//                    }
-//                }
-//                .padding(.horizontal)
-//
-//                Spacer()
-//
-//                Text("Score: \(viewModel.score)")
-//                    .font(.largeTitle)
-//                    .padding(.bottom)
-//            }
-//            .accentColor(viewModel.theme.accentColor)
-//            .foregroundColor(viewModel.theme.accentColor)
-//            .navigationBarTitle(viewModel.theme.name)
-//            .navigationBarItems(trailing:
-//                Button("New Game") {
-//                    withAnimation(.easeInOut(duration: shuffleDuration)) {
-//                        viewModel.newGame()
-//                    }
-//                }
-//            )
-//        }
-//    }

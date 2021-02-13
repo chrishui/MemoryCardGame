@@ -13,11 +13,11 @@ import Foundation
 // <CardContent> is declared, as it is a 'don't care'/generic
 // CardContent is Equatable, so that it can match chosen card with potential match (==) operator
 struct MemoryGame<CardContent> where CardContent: Equatable{
-    var cards: Array<Card>
+    // private(set) means, setting it is private, but reading it is not
+    private(set) var cards: Array<Card>
     var score = 0
     
-    // Getter and Setter
-    var indexOfTheOneAndOnlyFaceUpCard: Int? {
+    private var indexOfTheOneAndOnlyFaceUpCard: Int? {
         get {
             // .only defined in Array+Only extension
             cards.indices.filter { cards[$0].isFaceUp }.only
