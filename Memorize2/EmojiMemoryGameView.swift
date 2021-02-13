@@ -15,8 +15,11 @@ struct EmojiMemoryGameView: View {
     
     // body is called by system
     var body: some View {
-        Text("Score: \(viewModel.score)")
-        
+        HStack{
+            Text("Score: \(viewModel.score)")
+            Text(viewModel.theme.name)
+        }
+            
         // Initialize struct Grid's var items, and viewForItem (do not need to show)
         Grid(viewModel.cards) {card in
             // Initialise struct CardView's var card
@@ -28,7 +31,6 @@ struct EmojiMemoryGameView: View {
         }
         .padding()
         .foregroundColor(viewModel.theme.cardColor)
-        
         
         // New game button
         Button("New Game"){
@@ -82,7 +84,7 @@ struct CardView: View {
     
 }
 
-// Preview
+// preview
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         EmojiMemoryGameView(viewModel: EmojiMemoryGame())
