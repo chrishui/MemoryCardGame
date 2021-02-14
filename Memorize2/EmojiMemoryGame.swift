@@ -34,9 +34,7 @@ class EmojiMemoryGame: ObservableObject {
     // MARK: - Access to the model
     // var cards to let people look cards in the model in constricted ways
     // Note: model is var defined in line 18. calls EmojiMemoryGame.CreateMemoryGame() as set in that line.
-    var cards: Array<MemoryGame<String>.Card> {
-        model.cards
-    }
+    var cards: Array<MemoryGame<String>.Card> { model.cards }
     var score: Int {
         model.score
     }

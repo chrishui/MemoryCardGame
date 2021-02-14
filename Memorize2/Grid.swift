@@ -12,7 +12,7 @@ struct Grid<Item, ItemView>: View where Item: Identifiable, ItemView: View {
     private var items: [Item]
     private var viewForItem: (Item) -> ItemView
     
-    // @escaping: (Item) -> ItemView needs to escape from initializer, without getting called (not sure?)
+    // @escaping: (Item) -> ItemView needs to escape from initializer, without getting called (?)
     init(_ items: [Item], viewForItem: @escaping (Item) -> ItemView) {
         self.items = items
         self.viewForItem = viewForItem
