@@ -21,29 +21,38 @@ struct EmojiMemoryGameView: View {
             Text("Score: \(viewModel.score)")
         }
         
-        // initialize struct Grid's var items, and viewForItem (do not need to show)
-        Grid(viewModel.cards) {card in
-            // Initialise struct CardView's var card
-            CardView(card: card)
-                .onTapGesture {
-                viewModel.choose(card: card)
+        VStack {
+            // initialize struct Grid's var items, and viewForItem (do not need to show)
+            Grid(viewModel.cards) {card in
+                // initialise struct CardView's var card
+                CardView(card: card).onTapGesture {
+                    // animation for user's chosen card,
+                    withAnimation(.linear(duration: 0.75)) {
+                        viewModel.choose(card: card)
+                    }
+                }
+                .padding(5)
             }
-            .padding(5)
+            .padding()
+            .foregroundColor(viewModel.theme.cardColor)
+            
+            // new game button
+            Button(action: {
+                // explicit animation for new game
+                withAnimation(.easeInOut(duration: 0.75)){
+                    viewModel.newGame()
+                }
+            }, label: {
+                Text("New Game")
+            })
+            .padding()
+            .background(
+                RoundedRectangle(
+                    cornerRadius: 8,
+                    style: .continuous
+                ).stroke(Color.accentColor)
+            ).padding()
         }
-        .padding()
-        .foregroundColor(viewModel.theme.cardColor)
-        
-        // new game button
-        Button("New Game"){
-            viewModel.newGame()
-        }
-        .padding()
-        .background(
-            RoundedRectangle(
-                cornerRadius: 8,
-                style: .continuous
-            ).stroke(Color.accentColor)
-        ).padding()
     }
 }
 
@@ -54,32 +63,31 @@ struct CardView: View {
     var body: some View{
         // GeometryReader view returns a fleixble preferred size relative to parent layout
         GeometryReader { geometry in
+            self.body(for: geometry.size)
+        }
+    }
+    
+    @ViewBuilder
+    private func body(for size: CGSize) -> some View {
+        if card.isFaceUp || !card.isMatched {
             ZStack {
-                if card.isFaceUp {
-                    RoundedRectangle(cornerRadius: cornerRadius).fill(Color.white)
-                    // stroke() is a function, draws a line along edges of shape
-                    RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: edgeLineWidth)
-                    Pie(startAngle: Angle.degrees(0-90), endAngle: Angle.degrees(110-90), clockwise: true)
-                        .padding(5).opacity(0.4)
-                    Text(card.content)
-                } else {
-                    // If card is not matched, draw fill. Else will be emptyView (Don't need to specify)
-                    if !card.isMatched {
-                        RoundedRectangle(cornerRadius: cornerRadius).fill()
-                    }
-                    
-                }
+                Pie(startAngle: Angle.degrees(0-90), endAngle: Angle.degrees(110-90), clockwise: true)
+                    .padding(5).opacity(0.4)
+                Text(card.content)
+                    //.font(Font.system(size: min(geometry.size.width, geometry.size.height) * fontScaleFactor))
+                    .font(Font.system(size: fontSize(for: size)))
+                    .rotationEffect(Angle.degrees(card.isMatched ? 360: 0))
+                    // implicit animation for matched card's text (emoji)
+                    .animation(card.isMatched ? Animation.linear(duration: 1).repeatForever(autoreverses: false) : .default)
             }
-            // Font size, calls fontSize func
-            //.font(Font.system(size: min(geometry.size.width, geometry.size.height) * fontScaleFactor))
-            .font(Font.system(size: fontSize(for: geometry.size)))
+            // .cardify extension specified in Caridfy.swift. Callsed .modifier, which passes content(above ZStack elements) into function
+            .cardify(isFaceUp: card.isFaceUp)
+            // animation for matched card, shrink
+            .transition(AnyTransition.scale)
         }
     }
     
     // MARK: - Drawing Constants
-    
-    private let cornerRadius: CGFloat = 10
-    private let edgeLineWidth: CGFloat = 3
     private func fontSize(for size: CGSize) -> CGFloat {
         min(size.width, size.height) * 0.7
     }

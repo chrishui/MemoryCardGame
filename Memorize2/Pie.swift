@@ -7,10 +7,14 @@
 
 import SwiftUI
 
+
+// shape introduces func path that requires implementation
 struct Pie: Shape {
     var startAngle: Angle
     var endAngle: Angle
     var clockwise: Bool = false
+    
+    var animatableData: 
     
     func path(in rect: CGRect) -> Path {
         let center = CGPoint(x: rect.midX, y: rect.midY)
