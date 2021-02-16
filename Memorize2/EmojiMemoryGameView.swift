@@ -26,7 +26,7 @@ struct EmojiMemoryGameView: View {
             Grid(viewModel.cards) {card in
                 // initialise struct CardView's var card
                 CardView(card: card).onTapGesture {
-                    // animation for user's chosen card,
+                    // animation for user's chosen card, card rotation
                     withAnimation(.linear(duration: 0.75)) {
                         viewModel.choose(card: card)
                     }
@@ -67,12 +67,37 @@ struct CardView: View {
         }
     }
     
+    // reference documentation. @State, when state value changes,
+    // the view invalidates its appearance and recomomputes the body
+    @State private var animatedBonusRemaining: Double = 0
+    
+    private func startBonusTimeAnimation() {
+        // sync up with model
+        animatedBonusRemaining = card.bonusRemaining
+        // animate towards 0
+        withAnimation(.linear(duration: card.bonusTimeRemaining)){
+            animatedBonusRemaining = 0
+        }
+    }
+    
     @ViewBuilder
     private func body(for size: CGSize) -> some View {
         if card.isFaceUp || !card.isMatched {
             ZStack {
-                Pie(startAngle: Angle.degrees(0-90), endAngle: Angle.degrees(110-90), clockwise: true)
-                    .padding(5).opacity(0.4)
+                Group {
+                    if card.isConsumingBonusTime {
+                        Pie(startAngle: Angle.degrees(0-90), endAngle: Angle.degrees(-animatedBonusRemaining*360-90), clockwise: true)
+                            // onAppear calls its {} everytime Pie appears on screen
+                            // i.e. every time Pie appears on screen, it will sync up with model via startBonusTimeAnimation
+                            .onAppear {
+                                startBonusTimeAnimation()
+                            }
+                    } else {
+                        Pie(startAngle: Angle.degrees(0-90), endAngle: Angle.degrees(-card.bonusRemaining*360-90), clockwise: true)
+                    }
+                }
+                .padding(5).opacity(0.4)
+                .transition(.identity)
                 Text(card.content)
                     //.font(Font.system(size: min(geometry.size.width, geometry.size.height) * fontScaleFactor))
                     .font(Font.system(size: fontSize(for: size)))
@@ -80,7 +105,7 @@ struct CardView: View {
                     // implicit animation for matched card's text (emoji)
                     .animation(card.isMatched ? Animation.linear(duration: 1).repeatForever(autoreverses: false) : .default)
             }
-            // .cardify extension specified in Caridfy.swift. Callsed .modifier, which passes content(above ZStack elements) into function
+            // .cardify extension specified in Caridfy.swift. Called .modifier, which passes content(above ZStack elements) into function
             .cardify(isFaceUp: card.isFaceUp)
             // animation for matched card, shrink
             .transition(AnyTransition.scale)
