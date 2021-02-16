@@ -116,7 +116,6 @@ struct CardView: View {
     private func fontSize(for size: CGSize) -> CGFloat {
         min(size.width, size.height) * 0.7
     }
-    
 }
 
 // preview
